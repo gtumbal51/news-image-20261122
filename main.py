@@ -442,14 +442,14 @@ def build():
 
 def main():
     img = build()
-    img.save("entry.png")
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    try:
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR")
+    if out_dir:
         os.makedirs(out_dir, exist_ok=True)
-        img.save(os.path.join(out_dir, "entry.png"))
-    except OSError as exc:
-        print(f"note: could not write to {out_dir}: {exc}")
-    check = Image.open("entry.png")
+        out_path = os.path.join(out_dir, "entry.png")
+    else:
+        out_path = "entry.png"
+    img.save(out_path)
+    check = Image.open(out_path)
     assert check.size == (1024, 1024), check.size
     print("entry.png OK", check.size, check.format)
 
